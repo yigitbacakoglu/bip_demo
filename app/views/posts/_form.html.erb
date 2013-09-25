@@ -1,0 +1,54 @@
+<%= form_for @post, :html => {:class => 'form-horizontal'} do |f| %>
+    <div class="control-group">
+      <%= f.label :title, :class => 'control-label' %>
+      <div class="controls">
+        <%= best_in_place f.object, :title, :type => :textarea %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :body, :class => 'control-label' %>
+      <div class="controls">
+        <%= best_in_place f.object, :body, :type => :textarea %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :meta_title, :class => 'control-label' %>
+      <div class="controls">
+        <%= best_in_place f.object, :meta_title, :type => :textarea %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :meta_description, :class => 'control-label' %>
+      <div class="controls">
+        <%= best_in_place f.object, :meta_description, :type => :textarea %>
+      </div>
+    </div>
+
+    <%= f.fields_for :images, (f.object.images.blank? ? f.object.images.create : f.object.images) do |i| %>
+
+        <div class="control-group">
+          <%= i.label :url, :class => 'control-label' %>
+          <div class="controls">
+            <%= best_in_place i.object, :url, :path => @post, :form_builder => i %>
+          </div>
+        </div>
+
+        <%= i.fields_for :attachments, i.object.attachments.blank? ? i.object.attachments.create : i.object.attachments do |a| %>
+
+
+            <div class="control-group">
+              <%= i.label :file_name, :class => 'control-label' %>
+              <div class="controls">
+                <%= best_in_place a.object, :file_name, :path => @post, :form_builder => a %>
+              </div>
+            </div>
+
+
+        <% end %>
+    <% end %>
+
+    <div class="form-actions">
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  posts_path, :class => 'btn' %>
+    </div>
+<% end %>
